@@ -10,3 +10,5 @@ pub struct Person {
     age: u32,
     id: PersonId,
 }
+
+pub struct Animal(pub String);
