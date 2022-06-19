@@ -1,8 +1,18 @@
-fn main() {
-    let message = "Hello World";
-    print_welcome(message)
-}
+use snake_game::{Animal, Log, Person, PersonId};
 
-fn print_welcome(text: &str) {
-    println!("{}", text)
+fn main() {
+    let mut person = Person::from(
+        String::from("Alan"),
+        String::from("Turing"),
+        27,
+        PersonId::IdentityCard(String::from("SOLBOO")),
+    );
+
+    person.change_age(28);
+
+    Person::print_type();
+    person.display_info();
+
+    let animal = Animal("dog".to_string());
+    animal.display_info();
 }
