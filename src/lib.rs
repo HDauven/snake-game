@@ -16,3 +16,18 @@ pub struct Person {
 }
 
 pub struct Animal(pub String);
+
+impl Log for Animal {
+    fn display_info(&self) {
+        println!("{}", self.0);
+    }
+}
+
+impl Log for Person {
+    fn display_info(&self) {
+        println!(
+            "{} {} {} {:?}",
+            self.name, self.last_name, self.age, self.id
+        );
+    }
+}
