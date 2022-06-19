@@ -53,3 +53,7 @@ impl Person {
         self.age = new_age;
     }
 }
+
+pub fn log_info(val: impl Log) {
+    val.display_info();
+}
