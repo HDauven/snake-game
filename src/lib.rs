@@ -31,3 +31,25 @@ impl Log for Person {
         );
     }
 }
+
+impl Person {
+    // constructor
+    pub fn from(name: String, last_name: String, age: u32, id: PersonId) -> Person {
+        Person {
+            name,
+            last_name,
+            age,
+            id,
+        }
+    }
+
+    // associated function
+    pub fn print_type() {
+        println!("Person");
+    }
+
+    // method
+    pub fn change_age(&mut self, new_age: u32) {
+        self.age = new_age;
+    }
+}
