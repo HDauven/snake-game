@@ -1,3 +1,7 @@
+pub trait Log {
+    fn display_info(&self);
+}
+
 #[derive(Debug)]
 pub enum PersonId {
     Passport(String),
