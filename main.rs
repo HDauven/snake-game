@@ -5,7 +5,7 @@ fn main() {
         String::from("Alan"),
         String::from("Turing"),
         27,
-        PersonId::IdentityCard(String::from("SOLBOO")),
+        PersonId::IdentityCard(String::from("SO"), String::from("LB"), String::from("SOO")),
     );
 
     person.change_age(28);
