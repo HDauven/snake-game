@@ -2,8 +2,10 @@ import init, { World } from "snake-game";
 
 init().then(_ => {
     const CELL_SIZE = 40;
+    const WORLD_WIDTH = 8;
+    const SNAKE_SPAWN_IDX = 2;
 
-    const world = World.new();
+    const world = World.new(WORLD_WIDTH, SNAKE_SPAWN_IDX);
     const worldWidth = world.width();
 
     const canvas = <HTMLCanvasElement> document.getElementById("snake-canvas");
