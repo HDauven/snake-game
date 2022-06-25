@@ -50,12 +50,11 @@ init().then(_ => {
     }
 
     function update() {
-        setInterval(() => {
-            console.log("updating");
+        setTimeout(() => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawWorld();
-            drawSnake();
             world.update();
+            paint();
+            requestAnimationFrame(update);
         }, 100);
     }
 
