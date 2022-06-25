@@ -1,5 +1,6 @@
-import init, { greet } from "snake-game";
+import init, { World } from "snake-game";
 
 init().then(_ => {
-    greet("Alan");
+    const world = World.new();
+    console.log(world.width);
 });
