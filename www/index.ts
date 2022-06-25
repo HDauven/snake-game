@@ -1,66 +1,78 @@
-import init, { World } from "snake-game";
+import init, { World, Direction } from "snake-game";
 
-init().then(_ => {
-    const CELL_SIZE = 40;
-    const WORLD_WIDTH = 8;
-    const snakeSpawnIdx = Date.now() % (WORLD_WIDTH * WORLD_WIDTH);
+init().then((_) => {
+  const CELL_SIZE = 40;
+  const WORLD_WIDTH = 8;
+  const snakeSpawnIdx = Date.now() % (WORLD_WIDTH * WORLD_WIDTH);
 
-    const world = World.new(WORLD_WIDTH, snakeSpawnIdx);
-    const worldWidth = world.width();
+  const world = World.new(WORLD_WIDTH, snakeSpawnIdx);
+  const worldWidth = world.width();
 
-    const canvas = <HTMLCanvasElement> document.getElementById("snake-canvas");
-    const ctx = canvas.getContext("2d");
+  const canvas = <HTMLCanvasElement>document.getElementById("snake-canvas");
+  const ctx = canvas.getContext("2d");
 
-    canvas.height = worldWidth * CELL_SIZE;
-    canvas.width = worldWidth * CELL_SIZE;
+  canvas.height = worldWidth * CELL_SIZE;
+  canvas.width = worldWidth * CELL_SIZE;
 
-    function drawWorld() {
-        ctx.beginPath();
+  document.addEventListener("keydown", (e) => {
+    switch (e.code) {
+      case "ArrowUp":
+        world.change_snake_direction(Direction.Up);
+        break;
+      case "ArrowRight":
+        world.change_snake_direction(Direction.Right);
+        break;
+      case "ArrowDown":
+        world.change_snake_direction(Direction.Down);
+        break;
+      case "ArrowLeft":
+        world.change_snake_direction(Direction.Left);
+        break;
+    }
+  });
 
-        for (let x = 0; x < worldWidth + 1; x++){
-            ctx.moveTo(CELL_SIZE * x, 0);
-            ctx.lineTo(CELL_SIZE * x, worldWidth * CELL_SIZE);
-        }
+  function drawWorld() {
+    ctx.beginPath();
 
-        for (let y = 0; y < worldWidth + 1; y++){
-            ctx.moveTo(0, CELL_SIZE * y);
-            ctx.lineTo(worldWidth * CELL_SIZE, CELL_SIZE * y);
-        }
-
-        ctx.stroke();
+    for (let x = 0; x < worldWidth + 1; x++) {
+      ctx.moveTo(CELL_SIZE * x, 0);
+      ctx.lineTo(CELL_SIZE * x, worldWidth * CELL_SIZE);
     }
 
-    function drawSnake() {
-        const snakeIdx = world.snake_head_idx();
-        const col = snakeIdx % worldWidth;
-        const row = Math.floor(snakeIdx / worldWidth);
-
-        ctx.beginPath();
-        ctx.fillRect(
-            col * CELL_SIZE,
-            row * CELL_SIZE,
-            CELL_SIZE,
-            CELL_SIZE
-        )
-
-        ctx.stroke()
+    for (let y = 0; y < worldWidth + 1; y++) {
+      ctx.moveTo(0, CELL_SIZE * y);
+      ctx.lineTo(worldWidth * CELL_SIZE, CELL_SIZE * y);
     }
 
-    function paint() {
-        drawWorld();
-        drawSnake();
-    }
+    ctx.stroke();
+  }
 
-    function update() {
-        const fps = 5;
-        setTimeout(() => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            world.update();
-            paint();
-            requestAnimationFrame(update);
-        }, 1000 / fps);
-    }
+  function drawSnake() {
+    const snakeIdx = world.snake_head_idx();
+    const col = snakeIdx % worldWidth;
+    const row = Math.floor(snakeIdx / worldWidth);
 
-    paint();
-    update();
+    ctx.beginPath();
+    ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+
+    ctx.stroke();
+  }
+
+  function paint() {
+    drawWorld();
+    drawSnake();
+  }
+
+  function update() {
+    const fps = 5;
+    setTimeout(() => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      world.update();
+      paint();
+      requestAnimationFrame(update);
+    }, 1000 / fps);
+  }
+
+  paint();
+  update();
 });
