@@ -44,14 +44,21 @@ init().then(_ => {
         ctx.stroke()
     }
 
-    drawWorld();
-    drawSnake();
-
-    setInterval(() => {
-        console.log("updating");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function paint() {
         drawWorld();
         drawSnake();
-        world.update();
-    }, 100);
+    }
+
+    function update() {
+        setInterval(() => {
+            console.log("updating");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawWorld();
+            drawSnake();
+            world.update();
+        }, 100);
+    }
+
+    paint();
+    update();
 });
