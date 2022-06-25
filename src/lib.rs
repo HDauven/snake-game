@@ -30,7 +30,7 @@ impl Snake {
         }
 
         Snake {
-            body: vec!(SnakeCell(spawn_index)),
+            body,
             direction: Direction::Right,
         }
     }
