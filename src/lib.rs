@@ -56,22 +56,26 @@ impl World {
     pub fn new(width: usize, snake_idx: usize) -> World {
         let snake = Snake::new(snake_idx, 3);
         let size = width * width;
-        let mut reward_cell;
-
-        loop {
-            reward_cell = random(size);
-            if !snake.body.contains(&SnakeCell(reward_cell)) {
-                break;
-            }
-        }
 
         World {
             width,
             size,
+            reward_cell: World::generate_reward_cell(size, &snake.body),
             snake,
             next_cell: None,
-            reward_cell,
         }
+    }
+
+    fn generate_reward_cell(max: usize, snake_body: &Vec<SnakeCell>) -> usize {
+        let mut reward_cell;
+
+        loop {
+            reward_cell = random(max);
+            if !snake_body.contains(&SnakeCell(reward_cell)) {
+                break;
+            }
+        }
+        reward_cell
     }
 
     pub fn width(&self) -> usize {
