@@ -5,6 +5,11 @@ use wee_alloc::WeeAlloc;
 #[global_allocator]
 static ALLOC: WeeAlloc = WeeAlloc::INIT;
 
+#[wasm_bindgen(module = "/www/utils/random.js")]
+extern "C" {
+    fn random(max: usize) -> usize;
+}
+
 #[wasm_bindgen]
 #[derive(PartialEq)]
 pub enum Direction {
@@ -49,12 +54,15 @@ pub struct World {
 #[wasm_bindgen]
 impl World {
     pub fn new(width: usize, snake_idx: usize) -> World {
+        let size = width * width;
+        let reward_cell = random(size);
+
         World {
             width,
-            size: width * width,
+            size,
             snake: Snake::new(snake_idx, 3),
             next_cell: None,
-            reward_cell: 10,
+            reward_cell,
         }
     }
 
@@ -73,7 +81,9 @@ impl World {
     pub fn change_snake_direction(&mut self, direction: Direction) {
         let next_cell = self.gen_next_snake_cell(&direction);
 
-        if self.snake.body[1].0 == next_cell.0 { return; }
+        if self.snake.body[1].0 == next_cell.0 {
+            return;
+        }
 
         self.next_cell = Some(next_cell);
         self.snake.direction = direction;
@@ -94,7 +104,7 @@ impl World {
             Some(cell) => {
                 self.snake.body[0] = cell;
                 self.next_cell = None;
-            },
+            }
             None => {
                 self.snake.body[0] = self.gen_next_snake_cell(&self.snake.direction);
             }
