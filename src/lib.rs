@@ -11,19 +11,19 @@ pub enum Direction {
     Up,
     Right,
     Down,
-    Left
+    Left,
 }
 
 pub struct SnakeCell(usize);
 
 struct Snake {
     body: Vec<SnakeCell>,
-    direction: Direction
+    direction: Direction,
 }
 
 impl Snake {
     fn new(spawn_index: usize, size: usize) -> Snake {
-        let mut body = vec!();
+        let mut body = vec![];
 
         for i in 0..size {
             body.push(SnakeCell(spawn_index - i));
@@ -49,7 +49,7 @@ impl World {
         World {
             width,
             size: width * width,
-            snake: Snake::new(snake_idx, 3)
+            snake: Snake::new(snake_idx, 3),
         }
     }
 
@@ -74,34 +74,19 @@ impl World {
     }
 
     pub fn update(&mut self) {
+        let next_cell = self.gen_next_snake_cell();
+        self.snake.body[0] = next_cell;
+    }
+
+    fn gen_next_snake_cell(&self) -> SnakeCell {
         let snake_idx = self.snake_head_idx();
-        let (row, col) = self.index_to_cell(snake_idx);
-        let (row, col) = match self.snake.direction {
-            Direction::Right => {
-                (row, (col + 1) % self.width)
-            },
-            Direction::Left => {
-                (row, (col - 1) % self.width)
-            },
-            Direction::Up => {
-                ((row - 1) % self.width, col)
-            },
-            Direction::Down => {
-                ((row + 1) % self.width, col)
-            },
-        };
-        self.set_snake_head(self.cell_to_index(row, col));
-    }
+        let row = snake_idx / self.width;
 
-    fn set_snake_head(&mut self, idx: usize) {
-        self.snake.body[0].0 = idx;
-    }
-
-    fn index_to_cell(&self, idx: usize) -> (usize, usize) {
-        (idx / self.width, idx % self.width)
-    }
-
-    fn cell_to_index(&self, row: usize, col: usize) -> usize {
-        (row * self.width) + col
+        match self.snake.direction {
+            Direction::Right => SnakeCell((row * self.width) + (snake_idx + 1) % self.width),
+            Direction::Left => SnakeCell((row * self.width) + (snake_idx - 1) % self.width),
+            Direction::Up => SnakeCell((snake_idx - self.width) % self.size),
+            Direction::Down => SnakeCell((snake_idx + self.width) % self.size),
+        }
     }
 }
