@@ -14,7 +14,7 @@ pub enum Direction {
     Left
 }
 
-struct SnakeCell(usize);
+pub struct SnakeCell(usize);
 
 struct Snake {
     body: Vec<SnakeCell>,
@@ -63,6 +63,14 @@ impl World {
 
     pub fn change_snake_direction(&mut self, direction: Direction) {
         self.snake.direction = direction;
+    }
+
+    pub fn snake_length(&self) -> usize {
+        self.snake.body.len()
+    }
+
+    pub fn snake_cells(&self) -> *const SnakeCell {
+        self.snake.body.as_ptr()
     }
 
     pub fn update(&mut self) {
