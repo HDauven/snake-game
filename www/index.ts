@@ -1,4 +1,4 @@
-import init, { World, Direction } from "snake-game";
+import init, { World, Direction, GameStatus } from "snake-game";
 import { random } from "./utils/random";
 
 init().then((wasm) => {
@@ -9,6 +9,7 @@ init().then((wasm) => {
   const world = World.new(WORLD_WIDTH, snakeSpawnIdx);
   const worldWidth = world.width();
 
+  const points = document.getElementById("points");
   const gameStatus = document.getElementById("game-status");
   const gameControlBtn = document.getElementById("game-control-btn");
   const canvas = <HTMLCanvasElement>document.getElementById("snake-canvas");
@@ -98,7 +99,13 @@ init().then((wasm) => {
   }
 
   function drawGameStatus() {
+    const status = world.game_status();
     gameStatus.textContent = world.game_status_text();
+    points.textContent = world.points().toString();
+
+    if (status == GameStatus.Won || status == GameStatus.Lost) {
+      gameControlBtn.textContent = "Restart";
+    }
   }
 
   function paint() {
