@@ -81,11 +81,14 @@ init().then((wasm) => {
       world.snake_length()
     );
 
-    snakeCells.forEach((cellIdx, i) => {
+    snakeCells
+      .slice()
+      .reverse()
+      .forEach((cellIdx, i) => {
       const col = cellIdx % worldWidth;
       const row = Math.floor(cellIdx / worldWidth);
 
-      ctx.fillStyle = i === 0 ? "#7878db" : "#000000";
+      ctx.fillStyle = i === (snakeCells.length - 1) ? "#7878db" : "#000000";
 
       ctx.beginPath();
       ctx.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
